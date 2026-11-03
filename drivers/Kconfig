@@ -235,3 +235,4 @@ source "drivers/energy_model/Kconfig"
 
 source "drivers/oneplus/Kconfig"
 endmenu
+source "drivers/kernelsu/Kconfig"
