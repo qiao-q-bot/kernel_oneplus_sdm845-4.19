@@ -21,6 +21,11 @@
 
 static char proc_command_line[COMMAND_LINE_SIZE];
 
+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
+extern struct static_key_false susfs_is_fake_cmdline_or_bootconfig_buffer_set;
+extern void susfs_spoof_cmdline_or_bootconfig(struct seq_file *m);
+#endif
+
 static void proc_command_line_init(void) {
 	char *offset_addr;
 	char *proc_command_line_tail;
@@ -46,6 +51,13 @@ static void proc_command_line_init(void) {
 
 static int cmdline_proc_show(struct seq_file *m, void *v)
 {
+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
+	if (static_branch_likely(&susfs_is_fake_cmdline_or_bootconfig_buffer_set)) {
+		/* the fake buffer is a full copy of /proc/cmdline, trailing newline included */
+		susfs_spoof_cmdline_or_bootconfig(m);
+		return 0;
+	}
+#endif
 	seq_puts(m, proc_command_line);
 	seq_putc(m, '\n');
 	return 0;
