@@ -141,3 +141,6 @@ kernel/configs/android-*.cfg
 Android.bp
 out/
 out-susfs/
+out-ak3/
+*.zip
+*:Zone.Identifier
