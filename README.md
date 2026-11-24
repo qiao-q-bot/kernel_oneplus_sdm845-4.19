@@ -128,3 +128,18 @@ make -j$(nproc) $MK
 ## 许可与免责
 
 内核部分遵循 GPL-2.0-only，ReSukiSU 及 SUSFS 各自的许可证请参考其仓库。本项目按现状提供，不对设备损坏、数据丢失或其他后果负责，使用风险自负。
+
+## Build notes (susfs240-resukisu)
+
+ReSukiSU is a git submodule. After cloning, fetch it:
+
+    git clone --recurse-submodules -b susfs240-resukisu https://github.com/qiao-q-bot/kernel_oneplus_sdm845-4.19.git
+    # or, in an existing clone:
+    git submodule update --init
+
+The config must include the SUSFS fragment. Without it KernelSU falls back to
+the tracepoint hook, which only supports GKI 5.10+ and does not work on 4.19:
+
+    make $MK vendor/sdm845-perf_defconfig vendor/enchilada.config vendor/susfs.config
+
+Base: susfs4ksu gki-android12-5.10 @784ac9e (v2.4.0), ReSukiSU @57b2db60.
