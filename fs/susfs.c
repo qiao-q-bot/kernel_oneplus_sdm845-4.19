@@ -47,6 +47,10 @@ DEFINE_STATIC_KEY_TRUE(susfs_is_log_enabled);
 #define SUSFS_LOGE(fmt, ...) 
 #endif
 
+#ifndef SUSFS_LOGI_RL
+#define SUSFS_LOGI_RL(fmt, ...) SUSFS_LOGI(fmt, ##__VA_ARGS__)
+#endif
+
 /* selinux hide */
 static DEFINE_MUTEX(susfs_mutex_lock_sus_type);
 static DEFINE_HASHTABLE(SUS_TYPE_HLIST, 10);
